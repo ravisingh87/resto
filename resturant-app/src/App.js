@@ -7,6 +7,8 @@ import RestaurentList from './component/RestaurentList';
 import RestaurentSearch from './component/RestaurentSearch';
 import RestaurentUpdate from './component/RestaurentUpdate';
 import {Navbar, Nav} from 'react-bootstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faList,faHome,faPlus,faSearch } from '@fortawesome/free-solid-svg-icons'
 
 function App() {
   return (
@@ -17,12 +19,10 @@ function App() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link href="#home"><Link to="/">Home</Link></Nav.Link>
-              <Nav.Link href="#link"><Link to="/list">List</Link></Nav.Link>
-              <Nav.Link href="#link"><Link to="/create">Create</Link></Nav.Link>
-              <Nav.Link href="#link"><Link to="/search">Search</Link></Nav.Link>
-              <Nav.Link href="#link"><Link to="/update">Update</Link></Nav.Link>
-              <Nav.Link href="#link"><Link to="/detail">Details</Link></Nav.Link>
+              <Nav.Link href="#home"><Link to="/"><FontAwesomeIcon icon={faHome}/>Home</Link></Nav.Link>
+              <Nav.Link href="#link"><Link to="/list"><FontAwesomeIcon icon={faList}/>List</Link></Nav.Link>
+              <Nav.Link href="#link"><Link to="/create"><FontAwesomeIcon icon={faPlus}/>Create</Link></Nav.Link>
+              <Nav.Link href="#link"><Link to="/search"><FontAwesomeIcon icon={faSearch}/>Search</Link></Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
@@ -38,8 +38,7 @@ function App() {
         <Route path="/detail">
           <RestaurentDetail />
         </Route>
-        <Route path="/update">
-          <RestaurentUpdate />
+        <Route path="/update/:id" render={props=>(<RestaurentUpdate {...props}/>)}>
         </Route>
         <Route exact path="/">
           <Home />
