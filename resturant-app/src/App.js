@@ -6,43 +6,24 @@ import RestaurentDetail from './component/RestaurentDetail';
 import RestaurentList from './component/RestaurentList';
 import RestaurentSearch from './component/RestaurentSearch';
 import RestaurentUpdate from './component/RestaurentUpdate';
-import {Navbar, Nav} from 'react-bootstrap'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faList,faHome,faPlus,faSearch } from '@fortawesome/free-solid-svg-icons'
+import Login from './component/Login';
+import Logout from './component/Logout';
+import Protected from './component/Protected';
+import NavbarMenu from './component/NavbarMenu';
+
 
 function App() {
   return (
     <div className="App">
       <Router>
-        <Navbar bg="light" expand="lg">
-          <Navbar.Brand href="#home">Resto</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-              <Nav.Link href="#home"><Link to="/"><FontAwesomeIcon icon={faHome}/>Home</Link></Nav.Link>
-              <Nav.Link href="#link"><Link to="/list"><FontAwesomeIcon icon={faList}/>List</Link></Nav.Link>
-              <Nav.Link href="#link"><Link to="/create"><FontAwesomeIcon icon={faPlus}/>Create</Link></Nav.Link>
-              <Nav.Link href="#link"><Link to="/search"><FontAwesomeIcon icon={faSearch}/>Search</Link></Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
-        </Navbar>
-        <Route path="/list">
-          <RestaurentList />
-        </Route>
-        <Route path="/create">
-          <RestaurentCreate />
-        </Route>
-        <Route path="/search">
-          <RestaurentSearch />
-        </Route>
-        <Route path="/detail">
-          <RestaurentDetail />
-        </Route>
-        <Route path="/update/:id" render={props=>(<RestaurentUpdate {...props}/>)}>
-        </Route>
-        <Route exact path="/">
-          <Home />
-        </Route>
+        <Protected exact path="/list" component={RestaurentList}/>
+        <Protected exact path="/create" component={RestaurentCreate}/>
+        <Protected exact path="/search" component={RestaurentSearch}/>
+        <Route path="/detail"><RestaurentDetail /></Route>
+        <Route path="/update/:id" render={props=>(<RestaurentUpdate {...props}/>)}></Route>
+        <Route path="/logout"><Logout /></Route>
+        <Route path="/login" render={props=>(<Login {...props}/>)}></Route>
+        <Protected exact path="/" component={Home}/>
       </Router>
     </div>
   );

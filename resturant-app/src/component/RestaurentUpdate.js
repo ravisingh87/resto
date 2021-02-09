@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import NavbarMenu from './NavbarMenu';
 // yarn add @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome
 export default class RestaurentUpdate extends Component {
     constructor() {
@@ -40,6 +41,7 @@ export default class RestaurentUpdate extends Component {
     render() {
         return (
             <div>
+                <NavbarMenu/>
                 <h1>Restaurent Update</h1>
                 <input onChange={(event)=>{this.setState({name:event.target.value})}} 
                 placeholder="Resturant Name" value={this.state.name}/><br/><br/>

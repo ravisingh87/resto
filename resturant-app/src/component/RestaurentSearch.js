@@ -1,47 +1,88 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { Table ,Container,Form} from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import NavbarMenu from './NavbarMenu';
 
 export default class RestaurentSearch extends Component {
-    constructor(){
-        super()
-        this.state={
-            searchData:null,
-            noData:false,
+  constructor() {
+    super();
+    this.state = {
+      searchData: null,
+      noData: false,
+      lastSearch:"",
+    };
+  }
+  search(key) {
+      this.setState({lastSearch:key})
+    fetch('http://localhost:3000/restaurant?q=' + key).then((data) => {
+      data.json().then((resp) => {
+        if (resp.length > 0) {
+          this.setState({ searchData: resp, noData: false });
+        } else {
+          this.setState({ searchData: null, noData: true });
         }
-    }
-    search(key){
-        fetch('http://localhost:3000/restaurant?q='+ key).then((data)=>{
-            data.json().then((resp)=>{
-                if(resp.length>0){
-                    this.setState({searchData:resp,noData:false})
-                }
-                else{
-                    this.setState({searchData:null,noData:true})
-                }
-            })
-        })
-    }
-    render() {
-        return (
+      });
+    });
+  }
+  deleleRest(id){
+    fetch('http://localhost:3000/restaurant/'+id,{
+      method: 'DELETE',
+    }).then((result) => {
+      result.json().then((resp) => {
+        alert('Resturant has been deleted.');
+        this.search(this.state.lastSearch);
+      });
+    });
+  }
+  render() {
+    return (
+      <Container>
+        <NavbarMenu/>
+        <h1>Restaurent Search</h1>
+        <Form.Control type="text" placeholder="Search Restaurant" onChange={(event) => this.search(event.target.value)}/>
+        <div>
+          {this.state.searchData ? (
             <div>
-                <h1>Restaurent Search</h1>
-                <input type="text" onChange={(event)=>this.search(event.target.value)}/>
-                <div>
-                    {
-                        this.state.searchData?
-                        <div>
-                            {
-                                this.state.searchData.map((item)=>
-                                <div>{item.name}</div>
-                                )
-                            }
-                        </div>
-                        :" "
-                    }
-                    {
-                        this.state.noData?<h3>No Data Found</h3>:null
-                    }
-                </div>
+              <Table striped bordered hover>
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Name</th>
+                    <th>Rating</th>
+                    <th>Address</th>
+                    <th>Email</th>
+                    <th>Operation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.state.searchData.map((item) => (
+                    <tr>
+                      <td>{item.id}</td>
+                      <td>{item.name}</td>
+                      <td>{item.rating}</td>
+                      <td>{item.address}</td>
+                      <td>{item.email}</td>
+                      <td>
+                        <Link to={'/update/' + item.id}>
+                          <FontAwesomeIcon icon={faEdit} color="orange" />
+                        </Link>
+                        <span onClick={() => this.deleleRest(item.id)}>
+                          <FontAwesomeIcon icon={faTrash} color="grey" />
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
             </div>
-        )
-    }
+          ) : (
+            ' '
+          )}
+          {this.state.noData ? <h3>No Data Found</h3> : null}
+        </div>
+      </Container>
+    );
+  }
 }

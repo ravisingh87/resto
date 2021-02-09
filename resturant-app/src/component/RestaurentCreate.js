@@ -1,4 +1,7 @@
 import React, { Component } from 'react'
+import NavbarMenu from './NavbarMenu';
+
+
 
 export default class RestaurentCreate extends Component {
     constructor(){
@@ -26,6 +29,7 @@ export default class RestaurentCreate extends Component {
     render() {
         return (
             <div>
+                <NavbarMenu/>
                 <h1>Restaurent Create</h1>
                 <input onChange={(event)=>{this.setState({name:event.target.value})}} 
                 placeholder="Resturant Name"/><br/><br/>
